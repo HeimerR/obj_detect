@@ -1,0 +1,1 @@
+python3 yolo_video2.py --model="./logs/000/trained_weights_stage_1.h5" --classes="_classes.txt" --image
