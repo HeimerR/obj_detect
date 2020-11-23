@@ -37,21 +37,21 @@ Se probaron diferentes forma de realizarlo:
 
 Se usaron diferentes datasets:
 **- Roboflow:**
- - Train:
- - Valid:
+ - Train: 95
+ - Valid: 4
 
 **- Open Images Dataset V6 :**
- - Train:
- - Valid:
+ - Train: 907
+ - Valid: 73
 
 **- Libreria Flip:**
 1. Dataset
- - Train:
- - Valid:
+ - Train: 437
+ - Valid: 94
  
 2. Dataset
- - Train:
- - Valid:
+ - Train: 437
+ - Valid: 94
 
 ## Entrenamiento
 Se arranco con un modelo preentrenado de yolov3 suministrado por Roboflow. El entrenameinto se dividio en dos etapas:
