@@ -5,6 +5,7 @@ En este proyecto se entreno un modelo para reconocer cajas y se desplegó en Goo
 ## Uso
 **- Por web:**
  - Ingresar a la url: https://yoloapp.ue.r.appspot.com/
+ ![index_image]()
  - Cargar imagen dando click en seleccionar archivo
  - Verificar si la imagen tiene cajas dando click en el boton analyze
  - Visualizar resultados
