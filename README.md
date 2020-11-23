@@ -54,15 +54,15 @@ Se usaron diferentes datasets:
  - Valid: 94
 
 ## Entrenamiento
-Se arranco con un modelo preentrenado de yolov3 suministrado por Roboflow. El entrenameinto se dividio en dos etapas:
+Se inició con un modelo preentrenado de yolov3 suministrado por Roboflow. El entrenameinto se dividio en dos etapas:
 - Solo se entrenaron las 2 ulitmas capas
- - epochs: 500
- - batch: 32
+  - epochs: 500
+  - batch: 32
 
  
 - Se entrenaron todas las capas
- - epochs: 50
- - batch: 8 (por limitaciones de memoria)
+  - epochs: 50
+  - batch: 8 (por limitaciones de memoria)
 
 ## Despliegue
 Se realizó en Google cloud platform - app engine y se uso Google cloud storage para el almacenamiento de los datos.
