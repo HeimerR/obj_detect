@@ -10,12 +10,18 @@ from werkzeug.datastructures import FileStorage
 import requests
 import shutil
 
+import os
+from google.cloud import storage
+from io import BytesIO
+from PIL import Image
+
 app = Flask(__name__)
 yolo_ins = init_fun(app.root_path)
 
 #import pdb; pdb.set_trace()
 
-
+#CLOUD_STORAGE_BUCKET = os.environ['CLOUD_STORAGE_BUCKET']
+CLOUD_STORAGE_BUCKET = 'yolo_data'
 
 
 @app.route('/status')
@@ -38,44 +44,55 @@ def index(name=None):
 def detection(name=None):
     # import pdb; pdb.set_trace()
 
-    delete_files()
+    # delete_files()
+    # Create a Cloud Storage client.
+    gcs = storage.Client()
+
+    # Get the bucket that the file will be uploaded to.
+    bucket = gcs.get_bucket(CLOUD_STORAGE_BUCKET)
     if request.headers.get("Content-Type") == 'application/json':
         request_json = request.get_json()
         file_path = request_json.get("image")
-        file_name = re.split(r"/|\\", file_path)[-1]
-        response = requests.get(file_path, stream=True)
-        # import pdb; pdb.set_trace()
-        if response.status_code == 200:
-            response.raw.decode_content = True
+        name = re.split(r"/|\\", file_path)[-1]
+        response = requests.get(file_path)
+        image = Image.open(BytesIO(response.content))
 
-            new_path_image = os.path.join(app.root_path, 'static', 'images', 'upload', file_name)
-            with open(new_path_image, 'wb') as fp:
-                shutil.copyfileobj(response.raw, fp)
+        # Creating the "string" object to use upload_from_string
+        img_byte_array = BytesIO()
+        image.save(img_byte_array, format='JPEG')
 
-        # return jsonify(output=path_output_image)
+        # Create a new blob and upload the file's content.
+        blob = bucket.blob(name)
+
+        blob.upload_from_string(img_byte_array.getvalue(), content_type="image/jpeg")
+        # The public URL can be used to directly access the uploaded file via HTTP.
+        uploaded_url = blob.public_url
+
 
     else:
-        file = request.files['file']
-        file_name = secure_filename(file.filename)
-        new_path_image = os.path.join(app.root_path, 'static', 'images', 'upload', file_name)
-        new_outpath_image = os.path.join(app.root_path, 'static', 'images', 'detections', file_name)
-        file.save(new_path_image)
-        path_upload_image = url_for('static', filename='images/upload/{}'.format(file_name))
+        uploaded_file = request.files.get('file')
+        # Create a new blob and upload the file's content.
+        blob = bucket.blob(uploaded_file.filename)
 
-    #import pdb; pdb.set_trace()
-    detect_img(yolo_ins, new_path_image, new_outpath_image)
-    path_output_image = url_for('static', filename='images/detections/{}'.format(file_name))
+        blob.upload_from_string(
+                uploaded_file.read(),
+                content_type=uploaded_file.content_type
+        )
 
+        # The public URL can be used to directly access the uploaded file via HTTP.
+        uploaded_url = blob.public_url
+        name = uploaded_file.filename
+        
+    output_url = detect_img(yolo_ins, uploaded_url, name)
     if request.headers.get("Content-Type") == 'application/json':
-        return jsonify(output="http://localhost:5000" + path_output_image)
-
+        return jsonify(output=output_url)
     response = make_response(render_template('index.html',
                             name='',
-                            path_upload_image=path_upload_image,
-                            path_output_image=path_output_image,
+                            path_upload_image=uploaded_url,
+                            path_output_image=output_url,
                             label="Output image"))
-
     return response
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port='5000')
+    app.run(host='127.0.0.1', port=8080, debug=True)
+    # app.run(host='0.0.0.0', port='5000')

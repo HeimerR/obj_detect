@@ -4,16 +4,41 @@ from .yolo import YOLO, detect_video
 from PIL import Image
 import matplotlib.pyplot as plt
 
+import os
+from google.cloud import storage
 
-def detect_img(yolo, image_pathname, image_out_pathname):
+from PIL import Image
+import requests
+from io import BytesIO
+
+# Configure this environment variable via app.yaml
+CLOUD_STORAGE_BUCKET = 'yolo_data'
+
+def detect_img(yolo, image_url, name):
     print("-"*100)
     print(yolo)
     print(yolo.__dict__)
     print("-"*100)
-    image = Image.open(image_pathname)
+    response = requests.get(image_url)
+    image = Image.open(BytesIO(response.content))
+    
     r_image = yolo.detect_image(image)
-    r_image.show()
-    r_image.save(image_out_pathname)
+    # Creating the "string" object to use upload_from_string
+    img_byte_array = BytesIO()
+    r_image.save(img_byte_array, format='JPEG')
+    # Create a Cloud Storage client.
+    gcs = storage.Client()
+
+    # Get the bucket that the file will be uploaded to.
+    bucket = gcs.get_bucket(CLOUD_STORAGE_BUCKET)
+
+    # Create a new blob and upload the file's content.
+    blob = bucket.blob(name + ".analized.jpg")
+
+    blob.upload_from_string(img_byte_array.getvalue(), content_type="image/jpeg")
+
+    # The public URL can be used to directly access the uploaded file via HTTP.
+    return blob.public_url
 
 def init_fun(root):
     model_path= root + "/model_data/trained_weights_stage_1.h5"
