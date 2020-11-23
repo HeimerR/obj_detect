@@ -12,22 +12,17 @@ En este proyecto se entreno un modelo para reconocer cajas y se desplegó en Goo
  ![detection_image](https://github.com/HeimerR/obj_detect/blob/main/imagenes_github/2.png)
 
 
-**- Petición json:**
- - Hacer petición POST
- - En los Headers usar Content-Type con application/json
- - En el Body usar el formato raw
- - Enviar un JSON con la key = image y en el value la direccion de la imagen a analizar, como se ve en el ejemplo.
-```json
-{
+**- API:**
+- POST /detection
+```bash
+curl --location --request POST 'https://yoloapp.ue.r.appspot.com/detection' \
+--header 'Content-Type: application/json' \
+--data-raw '{
 	"image": "https://image.freepik.com/psd-gratis/mockup-cajas-envio-diferentes-tamanos_23-2147861796.jpg"
-}
+}'
 ```
- - Recibira un JSON con la url de la imagen analizada como se ve en el ejemplo.
-```json
-{
-    "output": "https://storage.googleapis.com/yolo_data/mockup-cajas-envio-diferentes-tamanos_23-2147861796.jpg.analized.jpg"
-}
-```
+**Parametros:**
+*image* se refiere a la dirección de la imagen a analizar.
 
 ## Etiquetado
 Se probaron diferentes forma de realizarlo:
