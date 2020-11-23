@@ -31,12 +31,12 @@ En este proyecto se entreno un modelo para reconocer cajas y se desplegó en Goo
 
 ## Etiquetado
 Se probaron diferentes forma de realizarlo:
-- Manualmente con programa de etiquetado
+- Manualmente con [LabelImg](https://github.com/tzutalin/labelImg "LabelImg") y [LinkedAI](https://linkedai.co/ "LinkedAI")
 - Descargar dataset previamente etiquetado desde Roboflow y Open Images Dataset V6 (se adapto el formato en el que se encontraba el etiquetado)
 - Con libreria flip: Se crearon imagenes sinteticas y se guardo la posición de los objetos en el formato de etiquetado requerido.
 
 Se usaron diferentes datasets:
-**- Roboflow:**
+**- [Roboflow](https://github.com/roboflow-ai/keras-yolo3/blob/master/yolo.py "Roboflow"):**
  - Train: 95
  - Valid: 4
 
@@ -44,7 +44,7 @@ Se usaron diferentes datasets:
  - Train: 907
  - Valid: 73
 
-**- Libreria Flip:**
+**- Libreria [Filp](https://github.com/LinkedAi/flip "Filp"):**
 1. Dataset
  - Train: 437
  - Valid: 94
@@ -77,3 +77,7 @@ https://yoloapp.ue.r.appspot.com/
 ## Futuras mejoras
 - Incrementar el dataset
 - Mejorar el tiempo de carga a la hora de cargar la aplicación.
+
+## Autores
+* [**Heimer Rojas**](https://github.com/HeimerR)
+* [**Ximena Andrade**](https://github.com/xica369)
