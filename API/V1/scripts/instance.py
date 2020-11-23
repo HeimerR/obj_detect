@@ -12,7 +12,8 @@ import requests
 from io import BytesIO
 
 # Configure this environment variable via app.yaml
-CLOUD_STORAGE_BUCKET = 'yolo_data'
+CLOUD_STORAGE_BUCKET = os.environ['CLOUD_STORAGE_BUCKET']
+# CLOUD_STORAGE_BUCKET = 'yolo_data' # for local test
 
 def detect_img(yolo, image_url, name):
     print("-"*100)
@@ -44,8 +45,13 @@ def init_fun(root):
     model_path= root + "/model_data/trained_weights_stage_1.h5"
     classes_path= root + "/model_data/_classes.txt"
     anchors_path= root + "/model_data/yolo_anchors.txt"
-    yolo_ins = YOLO(**{'classes_path': classes_path, 'image': True, 'output': '', 'input': './path2your_video', 'model_path': model_path, 'anchors_path': anchors_path})
+    yolo_ins = YOLO(**{'classes_path': classes_path,
+                       'image': True,
+                       'output': '',
+                       'input': './path2your_video',
+                       'model_path': model_path,
+                       'anchors_path': anchors_path})
     return yolo_ins
 
 if __name__ == '__main__':
-    detect_img(init_fun('.'), './scripts/test/3.jpg', './scripts/test/z.jpg')
+    detect_img(init_fun('.'), './scripts/test/3.jpg', './scripts/test/z.jpg') # for testing local storage

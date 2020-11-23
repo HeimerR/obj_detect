@@ -1,5 +1,5 @@
 runtime: python37
 instance_class: F4_1G
 env_variables:
-    CLOUD_STORAGE_BUCKET: images_for_yolo
+    CLOUD_STORAGE_BUCKET: yolo_data
 entrypoint: gunicorn -b :8080 -w 1 main:app

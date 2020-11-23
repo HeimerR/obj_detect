@@ -10,7 +10,6 @@ from werkzeug.datastructures import FileStorage
 import requests
 import shutil
 
-import os
 from google.cloud import storage
 from io import BytesIO
 from PIL import Image
@@ -20,8 +19,8 @@ yolo_ins = init_fun(app.root_path)
 
 #import pdb; pdb.set_trace()
 
-#CLOUD_STORAGE_BUCKET = os.environ['CLOUD_STORAGE_BUCKET']
-CLOUD_STORAGE_BUCKET = 'yolo_data'
+CLOUD_STORAGE_BUCKET = os.environ['CLOUD_STORAGE_BUCKET']
+# CLOUD_STORAGE_BUCKET = 'yolo_data' # for local test
 
 
 @app.route('/status')
@@ -44,7 +43,6 @@ def index(name=None):
 def detection(name=None):
     # import pdb; pdb.set_trace()
 
-    # delete_files()
     # Create a Cloud Storage client.
     gcs = storage.Client()
 
@@ -64,8 +62,10 @@ def detection(name=None):
         # Create a new blob and upload the file's content.
         blob = bucket.blob(name)
 
-        blob.upload_from_string(img_byte_array.getvalue(), content_type="image/jpeg")
-        # The public URL can be used to directly access the uploaded file via HTTP.
+        blob.upload_from_string(img_byte_array.getvalue(),
+                                content_type="image/jpeg")
+        # The public URL can be used to directly access
+        # the uploaded file via HTTP.
         uploaded_url = blob.public_url
 
 
@@ -79,7 +79,8 @@ def detection(name=None):
                 content_type=uploaded_file.content_type
         )
 
-        # The public URL can be used to directly access the uploaded file via HTTP.
+        # The public URL can be used to directly access
+        # the uploaded file via HTTP.
         uploaded_url = blob.public_url
         name = uploaded_file.filename
         
@@ -95,4 +96,4 @@ def detection(name=None):
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=8080, debug=True)
-    # app.run(host='0.0.0.0', port='5000')
+    # app.run(host='0.0.0.0', port='5000', debug=True) # for local test
