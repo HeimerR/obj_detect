@@ -5,10 +5,11 @@ En este proyecto se entreno un modelo para reconocer cajas y se desplegó en Goo
 ## Uso
 **- Por web:**
  - Ingresar a la url: https://yoloapp.ue.r.appspot.com/
- ![index_image]()
+ ![index_image](https://github.com/HeimerR/obj_detect/blob/main/imagenes_github/1.png)
  - Cargar imagen dando click en seleccionar archivo
  - Verificar si la imagen tiene cajas dando click en el boton analyze
  - Visualizar resultados
+ ![detection_image](https://github.com/HeimerR/obj_detect/blob/main/imagenes_github/2.png)
 
 
 **- Petición json:**
