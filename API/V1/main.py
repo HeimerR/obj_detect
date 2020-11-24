@@ -2,7 +2,6 @@ from flask import Flask
 from flask import render_template, request, url_for, make_response
 from werkzeug.utils import secure_filename
 import os
-from scripts.delete_files import delete_files
 from scripts.instance import init_fun, detect_img
 from flask import jsonify
 import re
@@ -19,7 +18,7 @@ yolo_ins = init_fun(app.root_path)
 
 #import pdb; pdb.set_trace()
 
-CLOUD_STORAGE_BUCKET = os.environ['CLOUD_STORAGE_BUCKET']
+CLOUD_STORAGE_BUCKET = os.environ['CLOUD_STORAGE_BUCKET'] # for deploy
 # CLOUD_STORAGE_BUCKET = 'yolo_data' # for local test
 
 
@@ -83,7 +82,7 @@ def detection(name=None):
         # the uploaded file via HTTP.
         uploaded_url = blob.public_url
         name = uploaded_file.filename
-        
+
     output_url = detect_img(yolo_ins, uploaded_url, name)
     if request.headers.get("Content-Type") == 'application/json':
         return jsonify(output=output_url)
@@ -95,5 +94,5 @@ def detection(name=None):
     return response
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8080, debug=True)
+    app.run(host='127.0.0.1', port=8080, debug=True) # for deploy
     # app.run(host='0.0.0.0', port='5000', debug=True) # for local test

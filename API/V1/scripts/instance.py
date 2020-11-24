@@ -12,7 +12,7 @@ import requests
 from io import BytesIO
 
 # Configure this environment variable via app.yaml
-CLOUD_STORAGE_BUCKET = os.environ['CLOUD_STORAGE_BUCKET']
+CLOUD_STORAGE_BUCKET = os.environ['CLOUD_STORAGE_BUCKET'] # for deploy
 # CLOUD_STORAGE_BUCKET = 'yolo_data' # for local test
 
 def detect_img(yolo, image_url, name):
@@ -22,7 +22,7 @@ def detect_img(yolo, image_url, name):
     print("-"*100)
     response = requests.get(image_url)
     image = Image.open(BytesIO(response.content))
-    
+
     r_image = yolo.detect_image(image)
     # Creating the "string" object to use upload_from_string
     img_byte_array = BytesIO()
