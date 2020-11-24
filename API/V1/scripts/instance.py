@@ -42,7 +42,7 @@ def detect_img(yolo, image_url, name):
     return blob.public_url
 
 def init_fun(root):
-    model_path= root + "/model_data/trained_weights_stage_1.h5"
+    model_path= root + "/model_data/weights.h5"
     classes_path= root + "/model_data/_classes.txt"
     anchors_path= root + "/model_data/yolo_anchors.txt"
     yolo_ins = YOLO(**{'classes_path': classes_path,
